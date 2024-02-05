@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class StripeUtils {
 
-
   public static void main(String[] args) throws StripeException {
     createPaymentLink();
   }
@@ -24,30 +23,27 @@ public class StripeUtils {
     Stripe.apiKey =
         "sk_test_51OQ0X5BRoiMqV5F6b6jUDlk3iSld8Pt47Q2rXx7zGsu6xToEVeGgCFd0chFiu9cjA6tUx0rH08lRnq9bIjwlBwQM00tBDmpE0E";
 
+    Product product =
+        Product.create(
+            ProductCreateParams.builder().setId("1790").setName("Sample product").build());
 
-    Product product = Product.create(ProductCreateParams.builder().setId("169").setName("Sample product").build());
-
-    PriceCreateParams params =
+    PriceCreateParams priceCreateParams =
         PriceCreateParams.builder()
             .setCurrency("cad")
             .setUnitAmount(1000L)
             .setProduct(product.getId())
             .build();
 
-    Price price = Price.create(params);
-
-
-
+    Price price = Price.create(priceCreateParams);
 
     PaymentLinkCreateParams paymentLinkCreateParams =
-            PaymentLinkCreateParams.builder()
-                    .addLineItem(
-                            PaymentLinkCreateParams.LineItem.builder()
-                                    .setPrice(price.getId())
-                                    .setQuantity(1L)
-                                    .build()
-                    )
-                    .build();
+        PaymentLinkCreateParams.builder()
+            .addLineItem(
+                PaymentLinkCreateParams.LineItem.builder()
+                    .setPrice(price.getId())
+                    .setQuantity(1L)
+                    .build())
+            .build();
 
     PaymentLink paymentLink = PaymentLink.create(paymentLinkCreateParams);
 

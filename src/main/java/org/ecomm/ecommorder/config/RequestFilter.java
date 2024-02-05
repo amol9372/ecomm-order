@@ -8,6 +8,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
 import org.ecomm.ecommorder.exception.ErrorCodes;
 import org.ecomm.ecommorder.exception.ErrorResponse;
@@ -66,5 +68,12 @@ public class RequestFilter extends OncePerRequestFilter {
     }
 
     filterChain.doFilter(request, response);
+  }
+
+  @Override
+  protected boolean shouldNotFilter(HttpServletRequest request) {
+    String path = request.getRequestURI();
+
+    return path.contains("/stripe");
   }
 }
